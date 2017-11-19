@@ -34,8 +34,16 @@ class Nils {
      *   attribute deserialization, and property change observation
      */
     this.PolymerElement = ElementMixin(HTMLElement);
-
     this.PolymerElementLegacy = LegacyElementMixin(HTMLElement).prototype;
+  }
+  // Get a Babel Compatible Nativ Browser Element
+  babelElement(BROWSERElement) {
+    function BabelHTMLElement(){
+      const newTarget = this.__proto__.constructor;
+      return Reflect.construct(BROWSERElement, [], newTarget);
+    }
+    Object.setPrototypeOf(BabelBROWSERElement, BROWSERElement);
+    Object.setPrototypeOf(BabelBROWSERElement.prototype, BROWSERElement.prototype);
   }
   // create component
   // take a existing component and combine them
@@ -86,8 +94,5 @@ class Nils {
       })
   }
 }
-
-
-
 
 module.exports = new Nils()

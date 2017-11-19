@@ -1,6 +1,13 @@
-export class nilsImport extends HTMLElement {
+function BabelHTMLElement(){
+  const newTarget = this.__proto__.constructor;
+  return Reflect.construct(HTMLElement, [], newTarget);
+}
+Object.setPrototypeOf(BabelHTMLElement, HTMLElement);
+Object.setPrototypeOf(BabelHTMLElement.prototype, HTMLElement.prototype);
+export class nilsImport extends BabelHTMLElement {
   constructor() {
     super()
+    this.done = false
   }
   adoptedCallback(oldDocument, newDocument) {
     console.log(oldDocument, newDocument)
@@ -20,17 +27,22 @@ export class nilsImport extends HTMLElement {
   connectedCallback() {
     let section = this.getAttribute('section') || 'head'
     let target = this.getAttribute('target') || 'window'
+
+    let finalTarget
     if (target === 'window') {
-      this.appendMainDocHead(section)
+      finalTarget = window.document[section].innerHTML
+      if (finalTarget.indexOf(this.innerHTML) === -1) {
+        window.document[section].innerHTML += this.innerHTML;
+      }
     } else {
-      this.appendImportingDocHead(section)
+      finalTarget = document[section].innerHTML
+      if (finalTarget.indexOf(this.innerHTML) === -1) {
+        document[section].innerHTML += this.innerHTML;
+      }
     }
   }
-  appendMainDocHead(section){
-    window.document[section].innerHTML += this.innerHTML;
-  }
   appendImportingDocHead(section){
-    document[section].innerHTML += this.innerHTML
+    document[section].innerHTML = this.innerHTML
   }
 }
 
