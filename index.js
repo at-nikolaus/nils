@@ -7,13 +7,13 @@ import './lib/elements/dom-if.js';
 import './lib/elements/array-selector.js';
 import './lib/elements/custom-style.js';
 import './lib/legacy/mutable-data-behavior.js';
-const most = require('most')
+const most = require('./most')
 const bluebird = require('bluebird')
 
 //No NEW
 class Nils {
   constructor(){
-    this.stream = most;
+    this.Stream = most;
     this.promise = bluebird;
     import { ElementMixin } from './lib/mixins/element-mixin.js';
 
